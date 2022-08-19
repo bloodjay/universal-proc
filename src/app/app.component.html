@@ -1,20 +1,18 @@
-
 <style>
   .card-grid {
     display: grid;
     column-gap: 0.5rem;
-    row-gap: 0.5rem;
     align-items: center;
     grid-template-columns: 1fr 1fr 1fr
   }
 
   .card-header {
     /* text-align: center; */
-    background-color:rgb(167, 231, 210);
+    background-color: #cdf0ea;
   }
 
   .card {
-    max-height: 325px;
+    max-height: 318px;
   }
 
   .home {
@@ -28,25 +26,71 @@
     justify-content: space-between;
   }
 
-  .cell:last-child{
+  .cell:last-child {
     border: 0;
   }
 
   .button-container {
-    background-color: rgba(221, 221, 215, 0.377);
+    background-color:#eeeeee;
     display: flex;
     justify-content: space-between;
   }
 
-  .card{
-    overflow-y: auto;
+  .card {
+    overflow-y: hidden;
   }
 
-  .btn-info{
-    background-color: rgb(110, 185, 185);
+  .btn-info {
+    background-color: #4cacbc;
+    color: white;
   }
-  .btn-outline-info{
-    color: rgb(110, 185, 185);
+
+  .btn-outline-info {
+    border: none;
+    color: black;
+  }
+
+  .header-container {
+    position: relative;
+    z-index: 1000;
+    width: 100%;
+  }
+
+  .header-button1 {
+    position: absolute;
+    background-color: #cdf0ea;
+    border: none;
+    right: 65px;
+    top: 5px;
+  }
+
+  .header-button2 {
+    position: absolute;
+    background-color: #cdf0ea;
+    border: none;
+    right: 5px;
+    top: 5px;
+  }
+
+  .card-header{
+    width: 100%;
+  }
+
+  .button-label{
+    margin-top: 4px;
+    margin-left: 4px;
+  }
+
+  .item-label{
+    margin-top: 6px;
+  }
+
+  .home{
+    box-shadow: 0px 8px 15px #eeeeee;
+  }
+
+  .card-area{
+    padding: 3px;
   }
 
   /* Responsive Styles */
@@ -82,7 +126,7 @@
 
 <div class="home" role="main">
   <div class="button-container">
-    <div>
+    <div class="button-label">
       KDS
     </div>
     <div>
@@ -90,16 +134,23 @@
       <button [disabled]="isNextDisabled" (click)="onNext()" class="btn btn-outline-info">next</button>
     </div>
   </div>
-  <div class="card-grid">
-    <div class="card" *ngFor="let data of datas.slice(6*offset,6*offset + 6)"><label class="card-header">Order
-        No.{{data.orderNo}}</label>
-      <div class="card-contain">
-        <ul class="list-group list-group-flush" *ngFor="let item of data.items">
-          <li class="list-group-item cell">
-            <div>{{item.name}}</div>
-            <div><button class="btn btn-info">Process</button></div>
-          </li>
-        </ul>
+  <div class="card-area">
+    <div id="card-grid" class="card-grid">
+      <div class="card" *ngFor="let data of dataArray.slice(6*offset,6*offset + 6);let i = index" id="{{'card'+(i+6*offset)}}">
+        <div class="header-container">
+          <label class="card-header">Order
+            No.{{data.orderNo}}</label>
+            <button [disabled] = "isUpDis" class="header-button1" (click)="onUp(i + 6*offset)" *ngIf="data.isUpDown">UP</button>
+            <button [disabled] = "isDownDis" class="header-button2" (click)="onDown(i + 6*offset)" *ngIf="data.isUpDown">down</button>
+        </div>
+        <div id="{{'card-contain'+(i+6*offset)}}" class="card-contain">
+          <ul class="list-group list-group-flush" *ngFor="let item of data.items">
+            <li class="list-group-item cell">
+              <div class="item-label">{{item.name}}</div>
+              <div><button class="btn btn-info">Process</button></div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
